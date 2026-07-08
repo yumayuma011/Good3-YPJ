@@ -1,0 +1,48 @@
+name: good3_app_ypj
+description: "今日のいいこと3つ記録アプリ"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # 状態管理
+  provider: ^6.1.2
+
+  # ローカル保存
+  shared_preferences: ^2.3.2
+  path_provider: ^2.1.4
+
+  # 日付フォーマット（flutter_localizationsが要求するバージョンに自動で合わせるため範囲指定なし）
+  intl: any
+
+  # 通知
+  flutter_local_notifications: ^17.2.3
+  permission_handler: ^11.3.1
+  timezone: ^0.9.4
+
+  # データのインポート/エクスポート
+  file_picker: ^8.1.2
+  share_plus: ^10.0.2
+
+  # サポート画面（お問い合わせ・バージョン表示）
+  url_launcher: ^6.3.0
+  package_info_plus: ^8.0.2
+
+  # ID採番
+  uuid: ^4.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
