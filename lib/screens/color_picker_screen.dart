@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import '../providers/theme_color_provider.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
-import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
+import '../l10n/l10n_extensions.dart';
 
 /// 設定 > カスタマイズ > カラー変更 画面。
 ///
@@ -26,14 +26,14 @@ class ColorPickerScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: const Text(AppStrings.colorPickerTitle,
-            style: TextStyle(color: AppColors.textPrimary)),
+        title: Text(context.l10n.colorPickerTitle,
+            style: const TextStyle(color: AppColors.textPrimary)),
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
       ),
       body: ListView(
         padding: const EdgeInsets.all(AppDimens.paddingXL),
         children: [
-          const Text('お好みの色を選んでください', style: AppTextStyles.sectionLabel),
+          Text(context.l10n.colorPickerPrompt, style: AppTextStyles.sectionLabel),
           const SizedBox(height: AppDimens.paddingL),
           _PresetColorGrid(currentColor: currentColor),
         ],

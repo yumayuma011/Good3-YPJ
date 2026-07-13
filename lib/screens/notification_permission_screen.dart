@@ -4,8 +4,8 @@ import '../providers/notification_setting_provider.dart';
 import '../services/storage_service.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
-import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
+import '../l10n/l10n_extensions.dart';
 import 'home_screen.dart';
 
 /// アプリ初回起動時に最初に表示する、デイリー通知の許可を求める画面。
@@ -72,14 +72,14 @@ class _NotificationPermissionScreenState
                 ),
               ),
               const SizedBox(height: 32),
-              const Text(
-                AppStrings.notifPermissionTitle,
+              Text(
+                context.l10n.notifPermissionTitle,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.screenHeading,
               ),
               const SizedBox(height: 16),
-              const Text(
-                AppStrings.notifPermissionBody,
+              Text(
+                context.l10n.notifPermissionBody,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.bodyText,
               ),
@@ -105,16 +105,16 @@ class _NotificationPermissionScreenState
                             color: Colors.white,
                           ),
                         )
-                      : const Text(AppStrings.notifPermissionAllow,
-                          style: TextStyle(fontSize: 15)),
+                      : Text(context.l10n.notifPermissionAllow,
+                          style: const TextStyle(fontSize: 15)),
                 ),
               ),
               const SizedBox(height: 12),
               TextButton(
                 onPressed: _isRequesting ? null : _onSkipPressed,
-                child: const Text(
-                  AppStrings.notifPermissionSkip,
-                  style: TextStyle(color: AppColors.textSecondary),
+                child: Text(
+                  context.l10n.notifPermissionSkip,
+                  style: const TextStyle(color: AppColors.textSecondary),
                 ),
               ),
             ],

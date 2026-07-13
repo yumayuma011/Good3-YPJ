@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
-import '../constants/app_strings.dart';
+import '../l10n/l10n_extensions.dart';
 import '../widgets/settings_widgets.dart';
 import 'static_text_screen.dart';
 
@@ -11,11 +11,14 @@ import 'static_text_screen.dart';
 class SupportScreen extends StatelessWidget {
   const SupportScreen({super.key});
 
-  Future<void> _sendMail() async {
+  // 問い合わせ先メールアドレスは言語に依存しないデータなのでARBには含めない
+  static const _contactEmail = 'good3.things.jp@gmail.com';
+
+  Future<void> _sendMail(BuildContext context) async {
     final uri = Uri(
       scheme: 'mailto',
-      path: AppStrings.contactEmail,
-      query: 'subject=${Uri.encodeComponent(AppStrings.contactSubject)}',
+      path: _contactEmail,
+      query: 'subject=${Uri.encodeComponent(context.l10n.contactSubject)}',
     );
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -28,14 +31,15 @@ class SupportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: const Text(
-          AppStrings.appTitle,
-          style: TextStyle(
+        title: Text(
+          l10n.appTitle,
+          style: const TextStyle(
               color: AppColors.textPrimary, fontWeight: FontWeight.bold),
         ),
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
@@ -48,63 +52,64 @@ class SupportScreen extends StatelessWidget {
           AppDimens.paddingXXL,
         ),
         children: [
-          const SectionLabel(AppStrings.settingsSupportSection),
+          SectionLabel(l10n.settingsSupportSection),
           SettingsGroup(rows: [
             SettingsRow(
-              label: AppStrings.supportContact,
+              label: l10n.supportContact,
               icon: Icons.mail_outline,
-              onTap: _sendMail,
+              onTap: () => _sendMail(context),
             ),
+            // 今は表示しない
+            // SettingsRow(
+            //   label: l10n.supportFaq,
+            //   icon: Icons.help_outline,
+            //   onTap: () => _push(
+            //     context,
+            //     StaticTextScreen(
+            //       title: l10n.supportFaq,
+            //       body: l10n.faqBody,
+            //     ),
+            //   ),
+            // ),
             SettingsRow(
-              label: AppStrings.supportFaq,
-              icon: Icons.help_outline,
-              onTap: () => _push(
-                context,
-                const StaticTextScreen(
-                  title: AppStrings.supportFaq,
-                  body: AppStrings.faqBody,
-                ),
-              ),
-            ),
-            SettingsRow(
-              label: AppStrings.supportTerms,
+              label: l10n.supportTerms,
               icon: Icons.description_outlined,
               onTap: () => _push(
                 context,
-                const StaticTextScreen(
-                  title: AppStrings.supportTerms,
-                  body: AppStrings.termsBody,
+                StaticTextScreen(
+                  title: l10n.supportTerms,
+                  body: l10n.termsBody,
                 ),
               ),
             ),
             SettingsRow(
-              label: AppStrings.supportPrivacy,
+              label: l10n.supportPrivacy,
               icon: Icons.privacy_tip_outlined,
               onTap: () => _push(
                 context,
-                const StaticTextScreen(
-                  title: AppStrings.supportPrivacy,
-                  body: AppStrings.privacyBody,
+                StaticTextScreen(
+                  title: l10n.supportPrivacy,
+                  body: l10n.privacyBody,
                 ),
               ),
             ),
             SettingsRow(
-              label: AppStrings.supportLegal,
+              label: l10n.supportLegal,
               icon: Icons.gavel_outlined,
               onTap: () => _push(
                 context,
-                const StaticTextScreen(
-                  title: AppStrings.supportLegal,
-                  body: AppStrings.legalBody,
+                StaticTextScreen(
+                  title: l10n.supportLegal,
+                  body: l10n.legalBody,
                 ),
               ),
             ),
             SettingsRow(
-              label: AppStrings.supportOssLicense,
+              label: l10n.supportOssLicense,
               icon: Icons.code,
               onTap: () => showLicensePage(
                 context: context,
-                applicationName: AppStrings.appTitle,
+                applicationName: l10n.appTitle,
               ),
             ),
           ]),

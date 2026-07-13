@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz_data;
+import '../l10n/generated/app_localizations.dart';
 
 /// デイリー通知（毎日決まった時刻にリマインドする通知）を管理するサービス。
 ///
@@ -21,6 +22,18 @@ class NotificationService {
   static const int _dailyNotificationId = 1001;
 
   bool _initialized = false;
+
+  /// 端末の言語設定から対応するAppLocalizationsを解決する。
+  /// この通知サービスはBuildContextを持たないため、gen_l10nが生成する
+  /// トップレベル関数lookupAppLocalizationsを直接使う。
+  AppLocalizations _resolveL10n() {
+    final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    final matched = AppLocalizations.supportedLocales.firstWhere(
+      (l) => l.languageCode == deviceLocale.languageCode,
+      orElse: () => const Locale('ja'),
+    );
+    return lookupAppLocalizations(matched);
+  }
 
   Future<void> init() async {
     if (_initialized) return;
@@ -91,21 +104,22 @@ class NotificationService {
       scheduled = scheduled.add(const Duration(days: 1));
     }
 
-    const details = NotificationDetails(
+    final l10n = _resolveL10n();
+    final details = NotificationDetails(
       android: AndroidNotificationDetails(
         'daily_reminder_channel',
-        'デイリー通知',
-        channelDescription: '今日のいいことを記録する時間をお知らせします',
+        l10n.dailyNotificationChannelName,
+        channelDescription: l10n.dailyNotificationChannelDescription,
         importance: Importance.high,
         priority: Priority.high,
       ),
-      iOS: DarwinNotificationDetails(),
+      iOS: const DarwinNotificationDetails(),
     );
 
     await _plugin.zonedSchedule(
       _dailyNotificationId,
-      '今日のいいこと',
-      '今日あった「いいこと」を記録しましょう☺️',
+      l10n.dailyNotificationTitle,
+      l10n.dailyNotificationBody,
       scheduled,
       details,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,

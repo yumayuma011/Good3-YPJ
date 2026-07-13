@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import '../constants/app_strings.dart';
 import '../models/good_thing_entry.dart';
 import '../services/storage_service.dart';
 
@@ -46,12 +45,16 @@ class EntriesProvider extends ChangeNotifier {
   }
 
   /// 同じ日付の記録があれば上書き、なければ新規追加する
-  Future<void> upsertEntry(DateTime date, List<String> items) async {
+  Future<void> upsertEntry(
+    DateTime date,
+    List<String> items, {
+    required String fallbackItem,
+  }) async {
     final normalizedDate = GoodThingEntry.normalizeDate(date);
     var finalItems = items;
     // 3つとも空欄で保存された場合はデフォルトの一言を入れる
     if (items.every((e) => e.trim().isEmpty)) {
-      finalItems = [AppStrings.defaultFallbackItem, '', ''];
+      finalItems = [fallbackItem, '', ''];
     }
     final newEntry = GoodThingEntry(date: normalizedDate, items: finalItems);
 

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/notification_setting_provider.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
-import '../constants/app_strings.dart';
+import '../l10n/l10n_extensions.dart';
 import '../widgets/settings_widgets.dart';
 
 /// 設定 > カスタマイズ > デイリー通知設定 画面。
@@ -16,9 +16,7 @@ class NotificationSettingScreen extends StatelessWidget {
     final picked = await showTimePicker(
       context: context,
       initialTime: provider.time,
-      helpText: AppStrings.pickTimeHelp,
-      cancelText: AppStrings.cancel,
-      confirmText: AppStrings.ok,
+      // helpText等は指定せず、GlobalMaterialLocalizationsのロケール別デフォルトに任せる
     );
     if (picked != null) {
       await provider.setTime(picked);
@@ -34,8 +32,8 @@ class NotificationSettingScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: const Text(AppStrings.notifSettingTitle,
-            style: TextStyle(color: AppColors.textPrimary)),
+        title: Text(context.l10n.notifSettingTitle,
+            style: const TextStyle(color: AppColors.textPrimary)),
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
       ),
       body: ListView(
@@ -47,9 +45,9 @@ class NotificationSettingScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppDimens.radiusL),
             ),
             child: SwitchListTile(
-              title: const Text(
-                AppStrings.notifEnableLabel,
-                style: TextStyle(
+              title: Text(
+                context.l10n.notifEnableLabel,
+                style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary),
               ),
@@ -62,8 +60,8 @@ class NotificationSettingScreen extends StatelessWidget {
           if (provider.enabled)
             SettingsGroup(rows: [
               SettingsRow(
-                label:
-                    '${AppStrings.notifTimeLabelPrefix}${provider.time.hour.toString().padLeft(2, '0')}:${provider.time.minute.toString().padLeft(2, '0')}',
+                label: context.l10n.notifTimeLabel(
+                    '${provider.time.hour.toString().padLeft(2, '0')}:${provider.time.minute.toString().padLeft(2, '0')}'),
                 icon: Icons.access_time,
                 onTap: () => _pickTime(context),
               ),

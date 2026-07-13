@@ -7,8 +7,8 @@ import 'package:share_plus/share_plus.dart';
 import '../providers/entries_provider.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
-import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
+import '../l10n/l10n_extensions.dart';
 
 enum DataIOMode { import, export }
 
@@ -31,6 +31,7 @@ class _DataImportExportScreenState extends State<DataImportExportScreen> {
   bool get _isExport => widget.mode == DataIOMode.export;
 
   Future<void> _handleExport() async {
+    final l10n = context.l10n;
     setState(() => _isProcessing = true);
     try {
       final jsonStr = await context.read<EntriesProvider>().exportAsJson();
@@ -38,16 +39,17 @@ class _DataImportExportScreenState extends State<DataImportExportScreen> {
       final file = File('${dir.path}/kyou_no_iikoto_export.json');
       await file.writeAsString(jsonStr);
       await Share.shareXFiles([XFile(file.path)],
-          text: '${AppStrings.appTitle} - ${AppStrings.exportTitle}');
-      setState(() => _message = AppStrings.exportSuccessMsg);
+          text: '${l10n.appTitle} - ${l10n.exportTitle}');
+      setState(() => _message = l10n.exportSuccessMsg);
     } catch (e) {
-      setState(() => _message = AppStrings.exportErrorMsg(e));
+      setState(() => _message = l10n.exportErrorMsg(e.toString()));
     } finally {
       setState(() => _isProcessing = false);
     }
   }
 
   Future<void> _handleImport() async {
+    final l10n = context.l10n;
     setState(() => _isProcessing = true);
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -61,9 +63,9 @@ class _DataImportExportScreenState extends State<DataImportExportScreen> {
       final file = File(result.files.single.path!);
       final content = await file.readAsString();
       await context.read<EntriesProvider>().importFromJson(content);
-      setState(() => _message = AppStrings.importSuccessMsg);
+      setState(() => _message = l10n.importSuccessMsg);
     } catch (e) {
-      setState(() => _message = AppStrings.importErrorMsg(e));
+      setState(() => _message = l10n.importErrorMsg(e.toString()));
     } finally {
       setState(() => _isProcessing = false);
     }
@@ -71,12 +73,13 @@ class _DataImportExportScreenState extends State<DataImportExportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-        title: Text(_isExport ? AppStrings.exportTitle : AppStrings.importTitle,
+        title: Text(_isExport ? l10n.exportTitle : l10n.importTitle,
             style: const TextStyle(color: AppColors.textPrimary)),
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
       ),
@@ -86,7 +89,7 @@ class _DataImportExportScreenState extends State<DataImportExportScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isExport ? AppStrings.exportDesc : AppStrings.importDesc,
+              _isExport ? l10n.exportDesc : l10n.importDesc,
               style: AppTextStyles.bodyText,
             ),
             const SizedBox(height: AppDimens.paddingXXL),
@@ -110,9 +113,7 @@ class _DataImportExportScreenState extends State<DataImportExportScreen> {
                         child: CircularProgressIndicator(
                             strokeWidth: 2, color: Colors.white),
                       )
-                    : Text(_isExport
-                        ? AppStrings.exportButton
-                        : AppStrings.importButton),
+                    : Text(_isExport ? l10n.exportButton : l10n.importButton),
               ),
             ),
             if (_message != null) ...[

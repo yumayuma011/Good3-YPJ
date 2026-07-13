@@ -1,0 +1,82 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "3 Good Things Today",
+  "ok": "OK",
+  "cancel": "Cancel",
+
+  "navRecord": "Record",
+  "navCalendar": "Calendar",
+
+  "notifPermissionTitle": "Set up your daily reminder",
+  "notifPermissionBody": "We'll send a reminder every day at a set time to record your \"3 good things.\"\nYou can change this anytime from Settings.",
+  "notifPermissionAllow": "Allow notifications",
+  "notifPermissionSkip": "Set up later",
+
+  "recordCardTitle": "Today's Record",
+  "recordDateLabel": "Date",
+  "recordPrompt": "Write down 3 good things that happened today\nEven the smallest things count",
+  "recordPrompt2": "Can't think of anything? That's okay\nJust save it as is",
+  "recordSave": "Save",
+  "recordSavedBanner": "Saved",
+  "recordListTitle": "Records",
+  "recordEmpty": "No records yet",
+  "defaultFallbackItem": "I made it through today",
+  "itemHint": "Good thing {number}",
+
+  "calendarNoEntry": "No record for this day yet",
+
+  "settingsCustomizeSection": "Customize",
+  "settingsColorChange": "Change Color",
+  "settingsDailyNotification": "Daily Notification Settings",
+  "settingsDataSection": "Data",
+  "settingsImport": "Import Data",
+  "settingsExport": "Export Data",
+  "settingsSupportSection": "Support",
+  "settingsSupport": "Support",
+  "settingsManageDataSection": "Manage Data",
+  "settingsResetAll": "Reset All Data",
+  "settingsRecommendedApps": "Recommended Apps",
+  "settingsVersion": "Version {version}",
+
+  "resetConfirmTitle": "Reset All Data",
+  "resetConfirmBody": "All recorded data will be deleted. This action cannot be undone. Are you sure?",
+  "resetConfirmDelete": "Delete",
+  "resetDoneSnackbar": "All data has been deleted",
+
+  "supportContact": "Contact Us",
+  "supportFaq": "FAQ",
+  "supportTerms": "Terms of Service",
+  "supportPrivacy": "Privacy Policy",
+  "supportLegal": "Legal Notice",
+  "supportOssLicense": "Open Source Licenses",
+  "contactSubject": "[3 Good Things Today] Inquiry",
+
+  "faqBody": "Please write frequently asked questions and answers here.\n\nQ. How many records can I save?\nA. You can save as many as your device's storage allows.\n\nQ. Where is the data stored?\nA. It is stored only on your device and is never sent externally.",
+  "termsBody": "Please write the terms of service here.",
+  "privacyBody": "Please write the privacy policy here.",
+  "legalBody": "Please write the legal notice content here.",
+
+  "colorPickerTitle": "Change Color",
+  "colorPickerPrompt": "Please choose your favorite color",
+
+  "notifSettingTitle": "Daily Notification Settings",
+  "notifEnableLabel": "Enable notifications",
+  "notifTimeLabel": "Notification time: {time}",
+
+  "exportTitle": "Export Data",
+  "importTitle": "Import Data",
+  "exportDesc": "Export your recorded data as a JSON file.\nUse this for backups or when switching devices.",
+  "importDesc": "Select and load a previously exported JSON file.\n*This will overwrite your current data.",
+  "exportButton": "Export",
+  "importButton": "Choose File",
+  "exportSuccessMsg": "Export completed",
+  "importSuccessMsg": "Import completed",
+  "exportErrorMsg": "Export failed: {message}",
+  "importErrorMsg": "Import failed: {message}",
+
+  "dailyNotificationChannelName": "Daily Reminder",
+  "dailyNotificationChannelDescription": "Notifies you when it's time to record today's good things",
+  "dailyNotificationTitle": "3 Good Things Today",
+  "dailyNotificationBody": "Let's record the good things that happened today ☺️"
+}

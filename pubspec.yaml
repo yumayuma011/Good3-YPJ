@@ -38,6 +38,7 @@ dependencies:
 
   # ID採番
   uuid: ^4.5.1
+  supabase_flutter: ^2.16.0
 
 dev_dependencies:
   flutter_test:
@@ -46,3 +47,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

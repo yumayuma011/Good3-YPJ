@@ -5,8 +5,9 @@ import '../providers/entries_provider.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
 import '../constants/app_rules.dart';
-import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
+import '../l10n/l10n_extensions.dart';
+import '../utils/date_format_utils.dart';
 import '../utils/weighted_length_formatter.dart';
 import '../widgets/entry_detail_card.dart';
 import '../widgets/good_thing_input_dialog.dart';
@@ -42,13 +43,7 @@ class _RecordScreenState extends State<RecordScreen> {
           _selectedDate.isAfter(today) ? today : _selectedDate,
       firstDate: DateTime(2000),
       lastDate: today, // 未来の日付は選択できないようにする
-      helpText: AppStrings.datePickHelp,
-      cancelText: AppStrings.cancel,
-      confirmText: AppStrings.ok,
-      fieldLabelText: AppStrings.dateFieldLabel,
-      fieldHintText: AppStrings.dateFieldHint,
-      errorFormatText: AppStrings.dateErrorFormat,
-      errorInvalidText: AppStrings.dateErrorInvalid,
+      // helpText等は指定せず、GlobalMaterialLocalizationsのロケール別デフォルトに任せる
     );
     if (picked != null) {
       setState(() => _selectedDate = GoodThingEntry.normalizeDate(picked));
@@ -76,7 +71,11 @@ class _RecordScreenState extends State<RecordScreen> {
 
   Future<void> _save() async {
     final items = _controllers.map((c) => c.text).toList();
-    await context.read<EntriesProvider>().upsertEntry(_selectedDate, items);
+    await context.read<EntriesProvider>().upsertEntry(
+          _selectedDate,
+          items,
+          fallbackItem: context.l10n.defaultFallbackItem,
+        );
 
     setState(() => _showSavedBanner = true);
     Future.delayed(const Duration(seconds: 2), () {
@@ -108,12 +107,12 @@ class _RecordScreenState extends State<RecordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    AppStrings.recordCardTitle,
+                  Text(
+                    context.l10n.recordCardTitle,
                     style: AppTextStyles.cardTitle,
                   ),
                   const SizedBox(height: 14),
-                  const Text(AppStrings.recordDateLabel,
+                  Text(context.l10n.recordDateLabel,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -138,7 +137,8 @@ class _RecordScreenState extends State<RecordScreen> {
                               color: AppColors.textSecondary),
                               SizedBox(width: 10),
                           Text(
-                            formatDateForField(_selectedDate),
+                            formatDateForField(
+                                _selectedDate, Localizations.localeOf(context)),
                             style: AppTextStyles.fieldValue,
                           ),
                         ],
@@ -146,8 +146,8 @@ class _RecordScreenState extends State<RecordScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  const Text(
-                    AppStrings.recordPrompt,
+                  Text(
+                    context.l10n.recordPrompt,
                     style: AppTextStyles.prompt,
                   ),
                   const SizedBox(height: 15),
@@ -207,7 +207,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                           child: Text(
                                             hasText
                                                 ? text
-                                                : AppStrings.itemHint(i + 1),
+                                                : context.l10n.itemHint(i + 1),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: hasText
@@ -236,8 +236,8 @@ class _RecordScreenState extends State<RecordScreen> {
                       ),
                     ),
                   const SizedBox(height: 5),
-                  const Text(
-                    AppStrings.recordPrompt2,
+                  Text(
+                    context.l10n.recordPrompt2,
                     style: AppTextStyles.prompt,
                   ),
                   const SizedBox(height: 15),
@@ -248,7 +248,7 @@ class _RecordScreenState extends State<RecordScreen> {
                       onPressed: _save,
                       icon: const Icon(Icons.save_outlined,
                           size: AppDimens.iconM),
-                      label: const Text(AppStrings.recordSave, //保存する ボタン
+                      label: Text(context.l10n.recordSave, //保存する ボタン
                           style : TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,)
@@ -274,7 +274,7 @@ class _RecordScreenState extends State<RecordScreen> {
                     color: AppColors.textPrimary),
                 SizedBox(width: 6),
                 Text(
-                    AppStrings.recordListTitle,
+                    context.l10n.recordListTitle,
                       style: AppTextStyles.cardTitle,
                       // style: TextStyle(
                       // fontWeight: FontWeight.bold,
@@ -285,11 +285,11 @@ class _RecordScreenState extends State<RecordScreen> {
             ),
             const SizedBox(height: 8),
             if (entries.isEmpty)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 32),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
                 child: Center(
                   child: Text(
-                    AppStrings.recordEmpty,
+                    context.l10n.recordEmpty,
                     style: AppTextStyles.emptyState,
                   ),
                 ),
@@ -307,15 +307,16 @@ class _RecordScreenState extends State<RecordScreen> {
             child: Container(
               color: primary,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    AppStrings.recordSavedBanner,
+                    context.l10n.recordSavedBanner,
                     style: AppTextStyles.bannerText,
                   ),
-                  SizedBox(width: 6),
-                  Icon(Icons.check, color: Colors.white, size: AppDimens.iconS),
+                  const SizedBox(width: 6),
+                  const Icon(Icons.check,
+                      color: Colors.white, size: AppDimens.iconS),
                 ],
               ),
             ),

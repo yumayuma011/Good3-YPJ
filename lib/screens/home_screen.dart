@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
+import '../l10n/l10n_extensions.dart';
 import '../widgets/view_toggle_pill.dart';
 import 'record_screen.dart';
 import 'calendar_screen.dart';
@@ -58,8 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.background,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: const Text(
-          AppStrings.appTitle,
+        title: Text(
+          context.l10n.appTitle,
           style: AppTextStyles.appBarTitle,
         ),
         actions: [
@@ -97,14 +97,14 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.cardBackground,
         selectedItemColor: Theme.of(context).colorScheme.primary,
         unselectedItemColor: AppColors.textSecondary,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.edit_note),
-            label: AppStrings.navRecord,
+            icon: const Icon(Icons.edit_note),
+            label: context.l10n.navRecord,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: AppStrings.navCalendar,
+            icon: const Icon(Icons.calendar_month_outlined),
+            label: context.l10n.navCalendar,
           ),
         ],
       ),

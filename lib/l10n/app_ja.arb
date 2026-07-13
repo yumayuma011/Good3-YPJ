@@ -1,0 +1,107 @@
+{
+  "@@locale": "ja",
+
+  "appTitle": "今日のいいこと",
+  "ok": "OK",
+  "cancel": "キャンセル",
+
+  "navRecord": "記録",
+  "navCalendar": "カレンダー",
+
+  "notifPermissionTitle": "デイリー通知を設定しましょう",
+  "notifPermissionBody": "毎日決まった時間に「今日のいいこと」を\n記録するお知らせを届けます。\n通知は設定画面からいつでも変更できます。",
+  "notifPermissionAllow": "通知を許可する",
+  "notifPermissionSkip": "あとで設定する",
+
+  "recordCardTitle": "今日の記録",
+  "recordDateLabel": "日付",
+  "recordPrompt": "今日あった「いいこと」を3つ書いてみましょう\nどんなに小さなことでも構いません",
+  "recordPrompt2": "思いつかなくても大丈夫\nそのまま保存してみましょう",
+  "recordSave": "保存する",
+  "recordSavedBanner": "保存しました",
+  "recordListTitle": "記録内容",
+  "recordEmpty": "まだ記録がありません",
+  "defaultFallbackItem": "今日も生きていた",
+  "itemHint": "いいこと{number}",
+  "@itemHint": {
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+
+  "calendarNoEntry": "この日の記録はまだありません",
+
+  "settingsCustomizeSection": "カスタマイズ",
+  "settingsColorChange": "カラー変更",
+  "settingsDailyNotification": "デイリー通知設定",
+  "settingsDataSection": "データ",
+  "settingsImport": "データのインポート",
+  "settingsExport": "データのエクスポート",
+  "settingsSupportSection": "サポート",
+  "settingsSupport": "サポート",
+  "settingsManageDataSection": "データを管理",
+  "settingsResetAll": "すべてのデータをリセット",
+  "settingsRecommendedApps": "おすすめのアプリ",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
+
+  "resetConfirmTitle": "すべてのデータをリセット",
+  "resetConfirmBody": "記録した内容はすべて削除されます。この操作は取り消せません。よろしいですか？",
+  "resetConfirmDelete": "削除する",
+  "resetDoneSnackbar": "すべてのデータを削除しました",
+
+  "supportContact": "お問い合わせ",
+  "supportFaq": "よくある質問",
+  "supportTerms": "利用規約",
+  "supportPrivacy": "プライバシーポリシー",
+  "supportLegal": "特定商取引法に基づく表記",
+  "supportOssLicense": "オープンソースライセンス",
+  "contactSubject": "【今日のいいこと】お問い合わせ",
+
+  "faqBody": "ここによくある質問と回答を記載してください。\n\nQ. 記録は何件まで保存できますか？\nA. 端末の容量が許す限り保存できます。\n\nQ. データはどこに保存されますか？\nA. 端末内にのみ保存され、外部には送信されません。",
+  "termsBody": "ここに利用規約の本文を記載してください。",
+  "privacyBody": "ここにプライバシーポリシーの本文を記載してください。",
+  "legalBody": "ここに特定商取引法に基づく表記の内容を記載してください。",
+
+  "colorPickerTitle": "カラー変更",
+  "colorPickerPrompt": "お好みの色を選んでください",
+
+  "notifSettingTitle": "デイリー通知設定",
+  "notifEnableLabel": "通知を有効にする",
+  "notifTimeLabel": "通知時刻：{time}",
+  "@notifTimeLabel": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+
+  "exportTitle": "データのエクスポート",
+  "importTitle": "データのインポート",
+  "exportDesc": "記録したデータをJSONファイルとして書き出します。\nバックアップや機種変更の際にご利用ください。",
+  "importDesc": "以前出力したJSONファイルを選択して読込みます。\n※現在のデータは上書きされます。",
+  "exportButton": "エクスポートする",
+  "importButton": "ファイルを選択する",
+  "exportSuccessMsg": "エクスポートが完了しました",
+  "importSuccessMsg": "インポートが完了しました",
+  "exportErrorMsg": "エクスポートに失敗しました: {message}",
+  "@exportErrorMsg": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+  "importErrorMsg": "インポートに失敗しました: {message}",
+  "@importErrorMsg": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+
+  "dailyNotificationChannelName": "デイリー通知",
+  "dailyNotificationChannelDescription": "今日のいいことを記録する時間をお知らせします",
+  "dailyNotificationTitle": "今日のいいこと",
+  "dailyNotificationBody": "今日あった「いいこと」を記録しましょう☺️"
+}

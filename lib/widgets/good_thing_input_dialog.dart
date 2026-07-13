@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
 import '../constants/app_rules.dart';
-import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
+import '../l10n/l10n_extensions.dart';
 import '../utils/weighted_length_formatter.dart';
 
 /// 「いいこと」1件を入力するためのポップアップ（ダイアログ）。
@@ -93,7 +93,7 @@ class _GoodThingInputDialogState extends State<_GoodThingInputDialog> {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  AppStrings.itemHint(widget.number),
+                  context.l10n.itemHint(widget.number),
                   style: AppTextStyles.cardTitle,
                 ),
               ],
@@ -123,7 +123,7 @@ class _GoodThingInputDialogState extends State<_GoodThingInputDialog> {
                           WeightedLengthLimitFormatter(AppRules.itemMaxWeight),
                         ],
                         decoration: InputDecoration(
-                          hintText: AppStrings.itemHint(widget.number),
+                          hintText: context.l10n.itemHint(widget.number),
                           hintStyle:
                               const TextStyle(color: AppColors.textSecondary),
                           isDense: true,
@@ -150,7 +150,7 @@ class _GoodThingInputDialogState extends State<_GoodThingInputDialog> {
                 Expanded(
                   child: TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text(AppStrings.cancel),
+                    child: Text(context.l10n.cancel),
                   ),
                 ),
                 const SizedBox(width: AppDimens.paddingM),
@@ -164,7 +164,7 @@ class _GoodThingInputDialogState extends State<_GoodThingInputDialog> {
                         borderRadius: BorderRadius.circular(AppDimens.radiusM),
                       ),
                     ),
-                    child: const Text(AppStrings.ok),
+                    child: Text(context.l10n.ok),
                   ),
                 ),
               ],

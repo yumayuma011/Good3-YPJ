@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'providers/entries_provider.dart';
 import 'providers/notification_setting_provider.dart';
@@ -10,10 +12,18 @@ import 'screens/notification_permission_screen.dart';
 import 'services/notification_service.dart';
 import 'services/storage_service.dart';
 import 'constants/app_colors.dart';
-import 'constants/app_strings.dart';
+import 'l10n/generated/app_localizations.dart';
 
-void main() {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('ja');
+  await initializeDateFormatting('en');
+  await initializeDateFormatting('ko');
+  await Supabase.initialize(
+    url: 'https://mbblhfcpinfvjmtbedlo.supabase.co',
+    publishableKey: 'sb_publishable_nclldjEhpDlFgjX6fLr1Lw_7bVBCBB7',
+  );
   runApp(const KyouNoIikotoApp());
 }
 
@@ -43,15 +53,19 @@ class KyouNoIikotoApp extends StatelessWidget {
       child: Consumer<ThemeColorProvider>(
         builder: (context, themeProvider, _) {
           return MaterialApp(
-            title: AppStrings.appTitle,
+            onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
             debugShowCheckedModeBanner: false,
-            // 日付選択ダイアログ(showDatePicker)などの標準UIを日本語表示にする設定
-            locale: const Locale('ja'),
+            // locale は指定せず、端末の言語設定に自動追従させる
             supportedLocales: const [
               Locale('ja'),
+              Locale('ko'),
               Locale('en'),
+              Locale('en', 'US'),
+              Locale('en', 'CA'),
+              Locale('en', 'AU'),
             ],
             localizationsDelegates: const [
+              AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,

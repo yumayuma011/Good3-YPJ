@@ -4,8 +4,9 @@ import '../models/good_thing_entry.dart';
 import '../providers/entries_provider.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
-import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
+import '../l10n/l10n_extensions.dart';
+import '../utils/date_format_utils.dart';
 import '../widgets/entry_detail_card.dart';
 
 /// 「カレンダー」タブの中身。カレンダー表示とリスト表示は
@@ -59,6 +60,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _buildCalendarView(EntriesProvider provider) {
     final selectedEntry = provider.entryForDate(_selectedDate);
     final datesWithEntries = provider.datesWithEntries;
+    final locale = Localizations.localeOf(context);
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(
@@ -87,10 +89,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      Text('${_focusedMonth.year}  ',
+                      Text('${formatMonthHeaderYear(_focusedMonth, locale)}  ',
                           style: AppTextStyles.fieldLabel
                               .copyWith(fontSize: 14)),
-                      Text('${_focusedMonth.month}月',
+                      Text(formatMonthHeaderMonth(_focusedMonth, locale),
                           style: AppTextStyles.screenHeading
                               .copyWith(fontSize: 22)),
                     ],
@@ -102,7 +104,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ],
               ),
               Row(
-                children: AppStrings.weekdayHeaders
+                children: weekdayHeaders(locale)
                     .map((w) => Expanded(
                           child: Center(
                             child: Text(w, style: AppTextStyles.caption),
@@ -126,8 +128,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
               color: AppColors.cardBackground,
               borderRadius: BorderRadius.circular(AppDimens.radiusXL),
             ),
-            child: const Text(
-              AppStrings.calendarNoEntry,
+            child: Text(
+              context.l10n.calendarNoEntry,
               style: AppTextStyles.emptyState,
             ),
           ),
@@ -225,9 +227,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Widget _buildListView(EntriesProvider provider) {
     final entries = provider.entriesAsc;
+    final locale = Localizations.localeOf(context);
     if (entries.isEmpty) {
-      return const Center(
-        child: Text(AppStrings.recordEmpty, style: AppTextStyles.emptyState),
+      return Center(
+        child:
+            Text(context.l10n.recordEmpty, style: AppTextStyles.emptyState),
       );
     }
 
@@ -254,7 +258,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final color = AppColors.monthPillColors[month - 1];
 
       widgets.add(_MonthPill(
-        label: '$year / $month',
+        label: formatMonthGroupLabel(DateTime(year, month), locale),
         color: color,
         expanded: !isCollapsed,
         onTap: () => _toggleMonth(monthKey),

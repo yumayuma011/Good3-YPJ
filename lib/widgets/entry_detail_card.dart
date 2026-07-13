@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../models/good_thing_entry.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_dimens.dart';
-import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
+import '../utils/date_format_utils.dart';
 
 /// 「2026 6.11 木 / 1 今日も生きていた」のような、日付＋いいこと一覧を表示するカード。
 /// 記録画面・カレンダー画面の両方で使い回す。
@@ -21,8 +20,8 @@ class EntryDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final d = entry.date;
-    final weekday = AppStrings.weekdaysMonFirst[d.weekday - 1];
-    final dateLabel = '${d.year}.${d.month}.${d.day} ($weekday)';
+    final locale = Localizations.localeOf(context);
+    final dateLabel = formatEntryDateLabel(d, locale);
     final items = entry.displayItems;
 
     return Container(
@@ -101,7 +100,3 @@ class _NumberBadge extends StatelessWidget {
     );
   }
 }
-
-/// 日付入力欄用のフォーマッタ（yyyy/MM/dd）
-String formatDateForField(DateTime date) =>
-    DateFormat('yyyy/MM/dd').format(date);
