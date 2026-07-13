@@ -16,7 +16,7 @@ class AppTextStyles {
   // カードの見出し（例：「今日の記録」）
   static const cardTitle = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 16,
+    fontSize: 18,
     color: AppColors.textPrimary,
   );
 
@@ -41,13 +41,14 @@ class AppTextStyles {
   // 説明文・プロンプト（例：「今日あった…」）
   static const prompt = TextStyle(
     fontSize: 13,
+    fontWeight: FontWeight.bold,
     color: AppColors.textSecondary,
   );
 
   // 設定行のラベル
   static const rowLabel = TextStyle(
     fontWeight: FontWeight.w600,
-    fontSize: 14,
+    fontSize: 18,
     color: AppColors.textPrimary,
   );
 

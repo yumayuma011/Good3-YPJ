@@ -30,7 +30,7 @@ class ViewTogglePill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _PillIcon(
-            icon: Icons.calendar_today_outlined,
+            icon: Icons.calendar_month_outlined,
             selected: isCalendarView,
             color: primary,
             onTap: () => onChanged(true),

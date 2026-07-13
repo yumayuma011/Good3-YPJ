@@ -9,6 +9,7 @@ import '../constants/app_strings.dart';
 import '../constants/app_text_styles.dart';
 import '../utils/weighted_length_formatter.dart';
 import '../widgets/entry_detail_card.dart';
+import '../widgets/good_thing_input_dialog.dart';
 
 /// 「今日の記録」入力画面。日付＋3つのいいことを入力して保存する。
 class RecordScreen extends StatefulWidget {
@@ -62,6 +63,17 @@ class _RecordScreenState extends State<RecordScreen> {
     }
   }
 
+  Future<void> _openInputDialog(int index) async {
+    final result = await showGoodThingInputDialog(
+      context: context,
+      number: index + 1,
+      initialText: _controllers[index].text,
+    );
+    if (result != null) {
+      setState(() => _controllers[index].text = result);
+    }
+  }
+
   Future<void> _save() async {
     final items = _controllers.map((c) => c.text).toList();
     await context.read<EntriesProvider>().upsertEntry(_selectedDate, items);
@@ -103,7 +115,7 @@ class _RecordScreenState extends State<RecordScreen> {
                   const SizedBox(height: 14),
                   const Text(AppStrings.recordDateLabel,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textSecondary,
                       )),
@@ -120,29 +132,25 @@ class _RecordScreenState extends State<RecordScreen> {
                             BorderRadius.circular(AppDimens.radiusM),
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          const Icon(Icons.calendar_today_outlined,
+                              size: AppDimens.iconM,
+                              color: AppColors.textSecondary),
+                              SizedBox(width: 10),
                           Text(
                             formatDateForField(_selectedDate),
                             style: AppTextStyles.fieldValue,
                           ),
-                          const Icon(Icons.calendar_today_outlined,
-                              size: AppDimens.iconM,
-                              color: AppColors.textSecondary),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 15),
                   const Text(
                     AppStrings.recordPrompt,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textSecondary,
-                    ),
+                    style: AppTextStyles.prompt,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 15),
                   for (var i = 0; i < 3; i++)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
@@ -150,7 +158,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 4),
+                            padding: const EdgeInsets.only(top: 16),
                             child: Container(
                               width: AppDimens.numberBadgeSizeLarge,
                               height: AppDimens.numberBadgeSizeLarge,
@@ -170,45 +178,56 @@ class _RecordScreenState extends State<RecordScreen> {
                             child: AnimatedBuilder(
                               animation: _controllers[i],
                               builder: (context, _) {
+                                final text = _controllers[i].text;
                                 final weight =
                                     WeightedLengthLimitFormatter.weightOfText(
-                                        _controllers[i].text);
-                                return Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.end,
-                                  children: [
-                                    TextField(
-                                      controller: _controllers[i],
-                                      inputFormatters: [
-                                        WeightedLengthLimitFormatter(
-                                            AppRules.itemMaxWeight),
-                                      ],
-                                      decoration: InputDecoration(
-                                        hintText: AppStrings.itemHint(i + 1),
-                                        hintStyle: const TextStyle(
-                                            color: AppColors.textSecondary),
-                                        filled: true,
-                                        fillColor: AppColors.rowBackground,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 14, vertical: 12),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              AppDimens.radiusM),
-                                          borderSide: BorderSide.none,
+                                        text);
+                                final hasText = text.trim().isNotEmpty;
+                                return InkWell(
+                                  onTap: () => _openInputDialog(i),
+                                  borderRadius: BorderRadius.circular(
+                                      AppDimens.radiusM),
+                                  child: Container(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        14, 10, 14, 4),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.rowBackground,
+                                      borderRadius: BorderRadius.circular(
+                                          AppDimens.radiusM),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        // 表示は一部（1行）のみ。全文はタップして開く
+                                        // ポップアップで確認・編集する。
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 4),
+                                          child: Text(
+                                            hasText
+                                                ? text
+                                                : AppStrings.itemHint(i + 1),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: hasText
+                                                ? AppTextStyles.fieldValue
+                                                : const TextStyle(
+                                                    color: AppColors
+                                                        .textSecondary),
+                                          ),
                                         ),
-                                      ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            '${weight.toStringAsFixed(weight % 1 == 0 ? 0 : 1)} / ${AppRules.itemMaxWeight.toStringAsFixed(0)}',
+                                            style: AppTextStyles.caption
+                                                .copyWith(fontSize: 11),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 2, right: 4),
-                                      child: Text(
-                                        '${weight.toStringAsFixed(weight % 1 == 0 ? 0 : 1)} / ${AppRules.itemMaxWeight.toStringAsFixed(0)}',
-                                        style: AppTextStyles.caption
-                                            .copyWith(fontSize: 11),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 );
                               },
                             ),
@@ -216,7 +235,12 @@ class _RecordScreenState extends State<RecordScreen> {
                         ],
                       ),
                     ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 5),
+                  const Text(
+                    AppStrings.recordPrompt2,
+                    style: AppTextStyles.prompt,
+                  ),
+                  const SizedBox(height: 15),
                   SizedBox(
                     width: double.infinity,
                     height: AppDimens.buttonHeight,
@@ -224,7 +248,11 @@ class _RecordScreenState extends State<RecordScreen> {
                       onPressed: _save,
                       icon: const Icon(Icons.save_outlined,
                           size: AppDimens.iconM),
-                      label: const Text(AppStrings.recordSave),
+                      label: const Text(AppStrings.recordSave, //保存する ボタン
+                          style : TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,)
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primary,
                         foregroundColor: Colors.white,
@@ -239,14 +267,23 @@ class _RecordScreenState extends State<RecordScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              AppStrings.recordListTitle,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: AppColors.textPrimary),
+            Row(children: [
+                SizedBox(width: 8),
+                Icon(Icons.edit_note,
+                    size: AppDimens.iconXL,
+                    color: AppColors.textPrimary),
+                SizedBox(width: 6),
+                Text(
+                    AppStrings.recordListTitle,
+                      style: AppTextStyles.cardTitle,
+                      // style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      // fontSize: 15,
+                      // color: AppColors.textPrimary),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             if (entries.isEmpty)
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 32),

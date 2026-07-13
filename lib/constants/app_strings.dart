@@ -23,10 +23,11 @@ class AppStrings {
   static const recordCardTitle = '今日の記録';
   static const recordDateLabel = '日付';
   // static const recordPrompt = '今日あった「いいこと」を思いつく範囲で書いてみましょう';
-  static const recordPrompt = '今日あった「いいこと」を3つ書いてみましょう\nどんなに小さなことでも構いません\n思いつかない日があっても大丈夫 そのまま保存してみましょう';
+  static const recordPrompt = '今日あった「いいこと」を3つ書いてみましょう\nどんなに小さなことでも構いません';
+  static const recordPrompt2 = '思いつかなくても大丈夫\nそのまま保存してみましょう';
   static const recordSave = '保存する';
   static const recordSavedBanner = '保存しました';
-  static const recordListTitle = 'ｄ記録内容';
+  static const recordListTitle = '記録内容';
   static const recordEmpty = 'まだ記録がありません';
   static const defaultFallbackItem = '今日も生きていた';
   static String itemHint(int number) => 'いいこと$number';
@@ -96,7 +97,7 @@ class AppStrings {
   static const exportDesc =
       '記録したデータをJSONファイルとして書き出します。\nバックアップや機種変更の際にご利用ください。';
   static const importDesc =
-      '以前エクスポートしたJSONファイルを選択して読み込みます。\n※現在のデータは上書きされます。';
+      '以前出力したJSONファイルを選択して読込みます。\n※現在のデータは上書きされます。';
   static const exportButton = 'エクスポートする';
   static const importButton = 'ファイルを選択する';
   static const exportSuccessMsg = 'エクスポートが完了しました';

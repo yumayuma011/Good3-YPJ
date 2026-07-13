@@ -250,8 +250,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final year = monthKey ~/ 100;
       final month = monthKey % 100;
       final isCollapsed = _collapsedMonths.contains(monthKey);
-      final color =
-          AppColors.monthPillColors[i % AppColors.monthPillColors.length];
+      // 実際の月番号(1〜12)に対応する色を使う（1月は必ず赤、など）
+      final color = AppColors.monthPillColors[month - 1];
 
       widgets.add(_MonthPill(
         label: '$year / $month',
@@ -320,7 +320,11 @@ class _MonthPill extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppDimens.radiusPill),
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
       child: Container(
+        width: double.infinity,
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
@@ -329,10 +333,9 @@ class _MonthPill extends StatelessWidget {
           border: Border.all(color: color, width: 1.5),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(label, style: AppTextStyles.monthPill.copyWith(color: color)),
-            const SizedBox(width: 6),
             Icon(
               expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
               color: color,

@@ -64,6 +64,17 @@ class KyouNoIikotoApp extends StatelessWidget {
                 primary: themeProvider.primaryColor,
               ),
               fontFamily: 'NotoSansJP',
+              // 画面遷移をiOS風のスワイプ戻り対応にする
+              // （Android等でも設定画面から記録画面へ「右スワイプで戻る」操作ができるようにする）
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                  TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                  TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+                  TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+                  TargetPlatform.linux: CupertinoPageTransitionsBuilder(),
+                },
+              ),
             ),
             home: const _AppEntryPoint(),
           );

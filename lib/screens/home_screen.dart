@@ -21,14 +21,30 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _tabIndex = 0;
+  late final PageController _pageController =
+      PageController(initialPage: _tabIndex);
 
   /// カレンダータブ内の「カレンダー表示 / リスト表示」の状態。
   /// AppBar側のトグルから操作するため、ここ(親)で保持する。
   bool _isCalendarView = true;
 
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   void _openSettings() {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const SettingsScreen()),
+    );
+  }
+
+  void _onTabTapped(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
     );
   }
 
@@ -63,8 +79,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
         ],
       ),
-      body: IndexedStack(
-        index: _tabIndex,
+      // 記録／カレンダーは左右スワイプでも移動できるようにPageViewで構成
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) => setState(() => _tabIndex = index),
         children: [
           const RecordScreen(),
           CalendarScreen(
@@ -74,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabIndex,
-        onTap: (i) => setState(() => _tabIndex = i),
+        onTap: _onTabTapped,
         type: BottomNavigationBarType.fixed,
         backgroundColor: AppColors.cardBackground,
         selectedItemColor: Theme.of(context).colorScheme.primary,
@@ -85,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: AppStrings.navRecord,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
+            icon: Icon(Icons.calendar_month_outlined),
             label: AppStrings.navCalendar,
           ),
         ],

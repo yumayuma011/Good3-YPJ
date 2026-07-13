@@ -22,7 +22,7 @@ class EntryDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final d = entry.date;
     final weekday = AppStrings.weekdaysMonFirst[d.weekday - 1];
-    final dateLabel = '${d.year}  ${d.month}.${d.day} $weekday';
+    final dateLabel = '${d.year}.${d.month}.${d.day} ($weekday)';
     final items = entry.displayItems;
 
     return Container(
@@ -43,9 +43,18 @@ class EntryDetailCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            children: [
+              const Icon(Icons.draw_outlined,
+              size: AppDimens.iconL,
+              color: AppColors.textSecondary
+          ),
+          SizedBox(width: 10),
           Text(
             dateLabel,
             style: AppTextStyles.entryDate,
+          ),
+            ],
           ),
           const SizedBox(height: 10),
           for (var i = 0; i < items.length; i++)
