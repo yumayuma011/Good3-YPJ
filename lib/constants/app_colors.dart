@@ -28,7 +28,6 @@ class AppColors {
   ];
 
   static const Color defaultPrimary = Color(0xFF4E3B2A);
-
   static const Color background = Color(0xFFF4F1EA);
   static const Color cardBackground = Color(0xFFFFFFFF);
   static const Color rowBackground = Color(0xFFEFE7D8);
