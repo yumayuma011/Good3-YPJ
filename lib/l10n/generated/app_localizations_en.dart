@@ -223,5 +223,5 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dailyNotificationBody =>
-      'Let\'s record the good things that happened today ☺️';
+      'Would you like to record today\'s good things?';
 }

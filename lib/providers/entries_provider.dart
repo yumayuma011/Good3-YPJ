@@ -51,17 +51,25 @@ class EntriesProvider extends ChangeNotifier {
     required String fallbackItem,
   }) async {
     final normalizedDate = GoodThingEntry.normalizeDate(date);
-    var finalItems = items;
-    // 3つとも空欄で保存された場合はデフォルトの一言を入れる
-    if (items.every((e) => e.trim().isEmpty)) {
-      finalItems = [fallbackItem, '', ''];
-    }
-    final newEntry = GoodThingEntry(date: normalizedDate, items: finalItems);
-
     final idx = _entries.indexWhere((e) =>
         e.date.year == normalizedDate.year &&
         e.date.month == normalizedDate.month &&
         e.date.day == normalizedDate.day);
+
+    var finalItems = List<String>.from(items);
+    if (idx >= 0) {
+      // 既存記録の空欄は、保存済みの内容を消さずにそのまま維持する。
+      final existingItems = _entries[idx].items;
+      finalItems = List.generate(3, (index) {
+        final input = index < finalItems.length ? finalItems[index] : '';
+        return input.trim().isEmpty ? existingItems[index] : input;
+      });
+    } else if (items.every((e) => e.trim().isEmpty)) {
+      // 新規記録で3つとも空欄の場合はデフォルトの一言を入れる。
+      finalItems = [fallbackItem, '', ''];
+    }
+
+    final newEntry = GoodThingEntry(date: normalizedDate, items: finalItems);
 
     if (idx >= 0) {
       _entries[idx] = newEntry;

@@ -61,6 +61,13 @@ class NotificationService {
   Future<bool> requestPermission() async {
     await init();
 
+    final currentStatus = await Permission.notification.status;
+    if (currentStatus.isGranted) return true;
+    if (currentStatus.isPermanentlyDenied || currentStatus.isRestricted) {
+      await openAppSettings();
+      return false;
+    }
+
     // iOS
     final iosPlugin = _plugin.resolvePlatformSpecificImplementation<
         IOSFlutterLocalNotificationsPlugin>();
@@ -70,7 +77,14 @@ class NotificationService {
         badge: true,
         sound: true,
       );
-      if (result != null) return result;
+      if (result == true) return true;
+      if (result == false) {
+        final status = await Permission.notification.status;
+        if (status.isPermanentlyDenied || status.isRestricted) {
+          await openAppSettings();
+        }
+        return false;
+      }
     }
 
     // Android 13以降
@@ -78,7 +92,14 @@ class NotificationService {
         AndroidFlutterLocalNotificationsPlugin>();
     if (androidPlugin != null) {
       final granted = await androidPlugin.requestNotificationsPermission();
-      if (granted != null) return granted;
+      if (granted == true) return true;
+      if (granted == false) {
+        final status = await Permission.notification.status;
+        if (status.isPermanentlyDenied || status.isRestricted) {
+          await openAppSettings();
+        }
+        return false;
+      }
     }
 
     // permission_handler によるフォールバック
@@ -122,7 +143,9 @@ class NotificationService {
       l10n.dailyNotificationBody,
       scheduled,
       details,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      // 日次リマインダーなので、Android 14以降で特別な「正確なアラーム」
+      // 権限を必要としないモードを使う（端末状況により多少遅れる場合がある）。
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time, // 毎日繰り返し
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,

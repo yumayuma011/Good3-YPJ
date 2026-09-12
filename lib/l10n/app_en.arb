@@ -78,5 +78,5 @@
   "dailyNotificationChannelName": "Daily Reminder",
   "dailyNotificationChannelDescription": "Notifies you when it's time to record today's good things",
   "dailyNotificationTitle": "3 Good Things Today",
-  "dailyNotificationBody": "Let's record the good things that happened today ☺️"
+  "dailyNotificationBody": "Would you like to record today's good things?"
 }

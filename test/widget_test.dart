@@ -1,30 +1,37 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:good3_app_ypj/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('初回起動時は通知許可画面を表示する', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+
     await tester.pumpWidget(const KyouNoIikotoApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.byIcon(Icons.notifications_active_outlined), findsOneWidget);
+    expect(find.byType(ElevatedButton), findsOneWidget);
+    expect(find.byType(TextButton), findsOneWidget);
+    expect(find.byType(BottomNavigationBar), findsNothing);
+  });
+
+  testWidgets('通知許可の確認後はホーム画面を表示する', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      'notif_permission_asked_v1': true,
+    });
+
+    await tester.pumpWidget(const KyouNoIikotoApp());
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+
+    expect(find.byType(BottomNavigationBar), findsOneWidget);
+    expect(find.byIcon(Icons.edit_note), findsWidgets);
+    expect(find.byIcon(Icons.calendar_month_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.settings), findsOneWidget);
   });
 }

@@ -207,7 +207,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get dailyNotificationChannelName => 'デイリー通知';
+  String get dailyNotificationChannelName => '記録リマインダー';
 
   @override
   String get dailyNotificationChannelDescription => '今日のいいことを記録する時間をお知らせします';
@@ -216,5 +216,5 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dailyNotificationTitle => '今日のいいこと';
 
   @override
-  String get dailyNotificationBody => '今日あった「いいこと」を記録しましょう☺️';
+  String get dailyNotificationBody => '記録してみませんか？';
 }

@@ -23,15 +23,33 @@ class NotificationSettingProvider extends ChangeNotifier {
       hour: int.tryParse(parts[0]) ?? 21,
       minute: int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0,
     );
+    // 旧バージョンで通知ONにしていた場合もOS権限を確認し、予約を再登録する。
+    if (_enabled) {
+      final granted = await _notificationService.requestPermission();
+      _enabled = granted;
+      await _storage.saveNotifEnabled(granted);
+      if (granted) {
+        await _notificationService.scheduleDaily(_time);
+      } else {
+        await _notificationService.cancelDaily();
+      }
+    }
     notifyListeners();
   }
 
   Future<void> setEnabled(bool value) async {
-    _enabled = value;
-    await _storage.saveNotifEnabled(value);
     if (value) {
-      await _notificationService.scheduleDaily(_time);
+      final granted = await _notificationService.requestPermission();
+      _enabled = granted;
+      await _storage.saveNotifEnabled(granted);
+      if (granted) {
+        await _notificationService.scheduleDaily(_time);
+      } else {
+        await _notificationService.cancelDaily();
+      }
     } else {
+      _enabled = false;
+      await _storage.saveNotifEnabled(false);
       await _notificationService.cancelDaily();
     }
     notifyListeners();

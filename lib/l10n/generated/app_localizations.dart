@@ -475,7 +475,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyNotificationChannelName.
   ///
   /// In ja, this message translates to:
-  /// **'デイリー通知'**
+  /// **'記録リマインダー'**
   String get dailyNotificationChannelName;
 
   /// No description provided for @dailyNotificationChannelDescription.
@@ -493,7 +493,7 @@ abstract class AppLocalizations {
   /// No description provided for @dailyNotificationBody.
   ///
   /// In ja, this message translates to:
-  /// **'今日あった「いいこと」を記録しましょう☺️'**
+  /// **'記録してみませんか？'**
   String get dailyNotificationBody;
 }
 

@@ -43,7 +43,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
+  flutter_lints: ^6.0.0 
+  flutter_launcher_icons: ^0.14.4
+
+ # アプリアイコン生成
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/good3_app_icon.png"
 
 flutter:
   uses-material-design: true

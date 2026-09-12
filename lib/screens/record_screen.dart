@@ -26,6 +26,17 @@ class _RecordScreenState extends State<RecordScreen> {
       List.generate(3, (_) => TextEditingController());
 
   bool _showSavedBanner = false;
+  bool _initialValuesLoaded = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final provider = context.watch<EntriesProvider>();
+    if (!_initialValuesLoaded && provider.isLoaded) {
+      _initialValuesLoaded = true;
+      _loadExistingEntryIntoFields();
+    }
+  }
 
   @override
   void dispose() {
@@ -77,6 +88,9 @@ class _RecordScreenState extends State<RecordScreen> {
           fallbackItem: context.l10n.defaultFallbackItem,
         );
 
+    if (!mounted) return;
+    // 空欄を既存値で補完した場合も含め、実際に保存された値を入力欄へ反映する。
+    _loadExistingEntryIntoFields();
     setState(() => _showSavedBanner = true);
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) setState(() => _showSavedBanner = false);

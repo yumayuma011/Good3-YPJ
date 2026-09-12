@@ -100,8 +100,8 @@
     }
   },
 
-  "dailyNotificationChannelName": "デイリー通知",
+  "dailyNotificationChannelName": "記録リマインダー",
   "dailyNotificationChannelDescription": "今日のいいことを記録する時間をお知らせします",
   "dailyNotificationTitle": "今日のいいこと",
-  "dailyNotificationBody": "今日あった「いいこと」を記録しましょう☺️"
+  "dailyNotificationBody": "記録してみませんか？"
 }
