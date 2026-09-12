@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import '../constants/app_colors.dart';
+import '../constants/app_text_styles.dart';
+import '../l10n/l10n_extensions.dart';
+import '../widgets/view_toggle_pill.dart';
+import 'record_screen.dart';
+import 'calendar_screen.dart';
+import 'settings_screen.dart';
+
+/// 記録／カレンダーの2タブ＋設定アイコンを持つメイン画面。
+///
+/// AppBarの右側は現在のタブによって内容を切り替える。
+/// ・記録タブ  → 設定画面への歯車アイコン
+/// ・カレンダータブ → カレンダー表示/リスト表示の切り替えトグル（歯車は表示しない）
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _tabIndex = 0;
+  late final PageController _pageController =
+      PageController(initialPage: _tabIndex);
+
+  /// カレンダータブ内の「カレンダー表示 / リスト表示」の状態。
+  /// AppBar側のトグルから操作するため、ここ(親)で保持する。
+  bool _isCalendarView = true;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _openSettings() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const SettingsScreen()),
+    );
+  }
+
+  void _onTabTapped(int index) {
+    _pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isCalendarTab = _tabIndex == 1;
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Text(
+          context.l10n.appTitle,
+          style: AppTextStyles.appBarTitle,
+        ),
+        actions: [
+          if (isCalendarTab)
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: ViewTogglePill(
+                isCalendarView: _isCalendarView,
+                onChanged: (value) =>
+                    setState(() => _isCalendarView = value),
+              ),
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.settings, color: AppColors.textPrimary),
+              onPressed: _openSettings,
+            ),
+        ],
+      ),
+      // 記録／カレンダーは左右スワイプでも移動できるようにPageViewで構成
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) => setState(() => _tabIndex = index),
+        children: [
+          const RecordScreen(),
+          CalendarScreen(
+            isCalendarView: _isCalendarView,
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _tabIndex,
+        onTap: _onTabTapped,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: AppColors.cardBackground,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: AppColors.textSecondary,
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.edit_note),
+            label: context.l10n.navRecord,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.calendar_month_outlined),
+            label: context.l10n.navCalendar,
+          ),
+        ],
+      ),
+    );
+  }
+}
